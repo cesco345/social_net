@@ -8,6 +8,7 @@ const colors = {
     lightGray: '#cccccc',
     red: '#ed4956',
     accent: '#ED4956',
+    border: '#dbdbdb',
     };
 
 export default colors;
