@@ -1,14 +1,31 @@
-import React from "react";
-import { StyleSheet, Text, View, Image, SafeAreaView } from "react-native";
+import React, { useState } from "react";
+import { Text, View, Image, SafeAreaView, Pressable } from "react-native";
 import colors from "../../../src/theme/colors";
 import fonts from "../../../src/theme/fonts";
 import Entypo from "@expo/vector-icons/Entypo";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
+import Comment from "../Comment/Comment";
+import { IPost } from "../../types/models";
 import styles from "./styles";
+import DoublePressable from "../DoublePressable";
 
-const FeedPost = ({ post }) => {
+interface IFeedPost {
+  post: IPost;
+}
+
+const FeedPost = ({ post }: IFeedPost) => {
+  const [isDesscriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const toggleDescriptionExpanded = () => {
+    setIsDescriptionExpanded((v) => !v);
+  };
+
+  const toggleLike = () => {
+    setIsLiked((v) => !v);
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.post}>
@@ -31,33 +48,39 @@ const FeedPost = ({ post }) => {
         </View>
 
         {/* Content */}
-        <Image
-          source={{
-            uri: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
-          }}
-          style={styles.image}
-        />
+        <DoublePressable onDoublePress={toggleLike}>
+          <Image
+            source={{
+              uri: post.image,
+            }}
+            style={styles.image}
+          />
+        </DoublePressable>
 
         {/* Footer */}
         <View style={styles.iconContainer}>
-          <Ionicons
-            name={"heart-outline"}
-            size={24}
-            style={styles.icon}
-            color={colors.black}
-          />
+          <Pressable onPress={toggleLike}>
+            <Ionicons
+              name={isLiked ? "heart" : "heart-outline"}
+              size={24}
+              style={styles.icon}
+              color={isLiked ? colors.accent : colors.black}
+            />
+          </Pressable>
           <Ionicons
             name="chatbubble-outline"
             size={24}
             style={styles.icon}
             color={colors.black}
           />
+
           <Feather
             name="send"
             size={24}
             style={styles.icon}
             color={colors.black}
           />
+
           <Feather
             name="bookmark"
             size={24}
@@ -68,35 +91,36 @@ const FeedPost = ({ post }) => {
         {/* Likes */}
         <Text style={styles.text}>
           Liked by{" "}
-          <Text style={{ fontWeight: fonts.weight.bold }}>mpiscani</Text> and{" "}
-          <Text style={{ fontWeight: fonts.weight.bold }}>66 others</Text>
+          <Text style={{ fontWeight: fonts.weight.bold }}>
+            {post.user.username}
+          </Text>{" "}
+          and{" "}
+          <Text style={{ fontWeight: fonts.weight.bold }}>
+            {post.nofLikes} others
+          </Text>
         </Text>
         {/* Post Description */}
-        <Text style={styles.text}>
-          <Text style={styles.bold}>mpiscani</Text>
-          {"  "} This is my first text, and for that reason I have requested
-          that Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id,
-          dolorum sequi esse voluptatum impedit et pariatur aliquam dolores!
-          Offic;iis natus molestiae fuga temporibus quo quae labore libero
-          repellendus voluptatibus alias.
+        <Text
+          style={styles.text}
+          numberOfLines={isDesscriptionExpanded ? 0 : 3}
+        >
+          <Text style={styles.bold}>
+            {post.user.username} {"  "}
+          </Text>
+          {post.description}
+        </Text>
+        <Text onPress={toggleDescriptionExpanded}>
+          {isDesscriptionExpanded ? "less" : "more"}
         </Text>
         {/* Comments */}
-        <Text>View all 16 comments</Text>
-        <View style={styles.comment}>
-          <Text style={styles.commentText}>
-            <Text style={styles.bold}>mpiscani</Text>
-            {"  "} Offic;iis natus molestiae fuga temporibus quo quae labore
-            libero repellendus voluptatibus alias.
-          </Text>
-          <Ionicons
-            name={"heart-outline"}
-            size={14}
-            style={styles.icon}
-            color={colors.black}
-          />
-        </View>
+        <Text>View all {post.nofComments} comments</Text>
+        {post.comments.map((comment) => (
+          <Comment key={comment.id} comment={comment} />
+        ))}
+
         {/* Posted date */}
-        <Text>December 19th, 2024</Text>
+
+        <Text>{post.createdAt}</Text>
       </View>
     </SafeAreaView>
   );
