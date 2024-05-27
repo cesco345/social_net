@@ -1,11 +1,13 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import HomeScreen from "./src/screens/HomeScreen/HomeScreen";
+import { View, StyleSheet, SafeAreaView } from "react-native";
+import HomeScreen from "./src/screens/HomeScreen";
+import CommentsScreen from "./src/screens/CommentsScreen";
 
 const App = () => {
   return (
     <View style={styles.app}>
-      <HomeScreen />
+      {/* <HomeScreen /> */}
+      <CommentsScreen />
     </View>
   );
 };
@@ -13,6 +15,7 @@ const App = () => {
 const styles = StyleSheet.create({
   app: {
     flex: 1,
+    paddingTop: 50,
   },
 });
 

@@ -13,9 +13,10 @@ import Carousel from "../Carousel";
 
 interface IFeedPost {
   post: IPost;
+  isVisible: boolean;
 }
 
-const FeedPost = ({ post }: IFeedPost) => {
+const FeedPost = ({ post, isVisible }: IFeedPost) => {
   const [isDesscriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
