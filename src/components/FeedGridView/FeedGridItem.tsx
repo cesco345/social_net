@@ -8,7 +8,7 @@ const FeedGridItem = ({ post }: { post: IPost }) => {
   return (
     <View style={{ flex: 1, padding: 1, aspectRatio: 1, maxWidth: "33.333%" }}>
       <Image
-        source={{ uri: post.image || post.images[0] }}
+        source={{ uri: post.image || (post.images && post.images[0]) }}
         style={{ flex: 1 }}
       />
       {post.images && (

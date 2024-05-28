@@ -9,6 +9,7 @@ const colors = {
     red: '#ed4956',
     accent: '#ED4956',
     border: '#dbdbdb',
+    error: '#ED4956',
     };
 
 export default colors;
