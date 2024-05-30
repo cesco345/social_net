@@ -10,6 +10,7 @@ import { IPost } from "../../types/models";
 import styles from "./styles";
 import DoublePressable from "../DoublePressable";
 import Carousel from "../Carousel";
+import { useNavigation } from "@react-navigation/native";
 
 interface IFeedPost {
   post: IPost;
@@ -19,6 +20,17 @@ interface IFeedPost {
 const FeedPost = ({ post, isVisible }: IFeedPost) => {
   const [isDesscriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+
+  const navigation = useNavigation();
+  const navigateToUser = () => {
+    // Navigate to user profile
+    navigation.navigate("UserProfile", { user: post.user });
+  };
+
+  const navigateToComments = () => {
+    // Navigate to comments screen
+    navigation.navigate("Comments", { postId: post.id });
+  };
 
   const toggleDescriptionExpanded = () => {
     setIsDescriptionExpanded((v) => !v);
@@ -55,7 +67,9 @@ const FeedPost = ({ post, isVisible }: IFeedPost) => {
             }}
             style={styles.userAvatar}
           />
-          <Text style={styles.userName}>{post.user.username}</Text>
+          <Text onPress={navigateToUser} style={styles.userName}>
+            {post.user.username}
+          </Text>
 
           <Entypo
             name="dots-three-horizontal"
@@ -124,7 +138,9 @@ const FeedPost = ({ post, isVisible }: IFeedPost) => {
           {isDesscriptionExpanded ? "less" : "more"}
         </Text>
         {/* Comments */}
-        <Text>View all {post.nofComments} comments</Text>
+        <Text onPress={navigateToComments}>
+          View all {post.nofComments} comments
+        </Text>
         {post.comments.map((comment) => (
           <Comment key={comment.id} comment={comment} />
         ))}
