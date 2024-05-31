@@ -11,20 +11,24 @@ import styles from "./styles";
 import DoublePressable from "../DoublePressable";
 import Carousel from "../Carousel";
 import { useNavigation } from "@react-navigation/native";
+import { FeedNavigationProp } from "../../navigation/types";
 
 interface IFeedPost {
   post: IPost;
   isVisible: boolean;
 }
 
-const FeedPost = ({ post, isVisible }: IFeedPost) => {
-  const [isDesscriptionExpanded, setIsDescriptionExpanded] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
+const FeedPost = (props: IFeedPost) => {
+  const { post, isVisible } = props;
 
-  const navigation = useNavigation();
+  const [isDesscriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [isLiked, setIsLiked] = useState(true);
+
+  const navigation = useNavigation<FeedNavigationProp>();
+
   const navigateToUser = () => {
     // Navigate to user profile
-    navigation.navigate("UserProfile", { user: post.user });
+    navigation.navigate("UserProfile", { userId: post.user.id });
   };
 
   const navigateToComments = () => {
@@ -33,7 +37,7 @@ const FeedPost = ({ post, isVisible }: IFeedPost) => {
   };
 
   const toggleDescriptionExpanded = () => {
-    setIsDescriptionExpanded((v) => !v);
+    setIsDescriptionExpanded((existingValue) => !existingValue);
   };
 
   const toggleLike = () => {
