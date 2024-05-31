@@ -12,6 +12,9 @@ import colors from "../theme/colors";
 import HomeStackNavigator from "./HomeStackNavigator";
 import ProfileStackNavigator from "./ProfileStackNavigator";
 import { BottomTabNavigatorParamList } from "./types";
+import SearchTabNavigator from "./SearchTabNavigator";
+import { Image } from "react-native";
+import logo from "./logo.png";
 
 const Tab = createBottomTabNavigator<BottomTabNavigatorParamList>();
 
@@ -36,8 +39,10 @@ const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="Search"
-        component={HomeScreen}
+        component={SearchTabNavigator}
         options={{
+          headerTitle: HeaderTitle,
+          headerTitleAlign: "center",
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="search" size={size} color={color} />
           ),
@@ -78,5 +83,11 @@ const BottomTabNavigator = () => {
     </Tab.Navigator>
   );
 };
-
+const HeaderTitle = () => (
+  <Image
+    source={logo}
+    resizeMode="contain"
+    style={{ width: 150, height: 40 }}
+  />
+);
 export default BottomTabNavigator;
